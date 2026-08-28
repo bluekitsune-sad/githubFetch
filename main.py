@@ -40,7 +40,7 @@ def paste_alpha_image(
 
 
 def main():
-    t = gifos.Terminal(750, 500, 15, 15, FONT_FILE_BITMAP, 15)
+    t = gifos.Terminal(750, 640, 15, 15, FONT_FILE_BITMAP, 15)
     t.set_prompt("\x1b[0;91msad\x1b[0m@\x1b[0;93mkitsune ~> \x1b[0m")
 
     t.gen_text("", 1, count=20)
@@ -136,6 +136,7 @@ def main():
     \x1b[96mTools: \x1b[93mPhotoshop, After Effects\x1b[0m	    
     \x1b[96mAutomation: \x1b[93mPower Automate, n8n\x1b[0m
     \x1b[96mTotal Commits ({int(year_now) - 1}): \x1b[93m{git_user_details.total_commits_last_year}\x1b[0m
+
     """
     t.gen_prompt(1)
     prompt_col = t.curr_col
@@ -147,7 +148,7 @@ def main():
     t.gen_typing_text(" -u bluekitsune-sad", 1, contin=True)
 
     t.toggle_show_cursor(False)
-    paste_alpha_image(t, "./assets/ascii-art.png", 10, 1, 0.48)
+    paste_alpha_image(t, "./assets/ascii-art.png", 12, 1, 0.48)
 
     t.set_font(FONT_FILE_BITMAP)
     t.toggle_show_cursor(True)
