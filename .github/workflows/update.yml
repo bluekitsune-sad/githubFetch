@@ -38,7 +38,7 @@ jobs:
       - name: Update readme
         run: |
           git add README.md output.gif
-          git -c "user.name=Saad Yousuf" -c "user.email=saadyousu64@gmail.com" commit -m "Automatically updated on $(TZ='Asia/Karachi' date)"
+          git -c "user.name=Saad Yousuf" -c "user.email=saadshaan619@gmail.com" commit -m "Automatically updated on $(TZ='Asia/Karachi' date)"
           git fetch origin
           git rebase --strategy-option=ours origin/main
           git push
