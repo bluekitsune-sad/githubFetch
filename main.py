@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 
 import gifos
 from zoneinfo import ZoneInfo
@@ -37,6 +38,56 @@ def paste_alpha_image(
             img = Image.alpha_composite(flat, img)
         img.convert("RGB").save("frames/art_prepared.png")
     term.paste_image("frames/art_prepared.png", row_num, col_num, 1)
+
+
+def wrap_text(block: str, width: int) -> str:
+    """Wrap each line at ``width`` visible glyphs, keeping ANSI color codes intact."""
+    ansi = re.compile(r"\\x1b\[\d+(?:;\d+)*m")
+
+    def tokenize(s: str) -> list:
+        tokens, i = [], 0
+        while i < len(s):
+            m = ansi.match(s, i)
+            if m:
+                tokens.append(("c", m.group(0)))
+                i = m.end()
+            else:
+                tokens.append(("v", s[i]))
+                i += 1
+        return tokens
+
+    def emit(tokens: list, start: int, end: int) -> str:
+        return "".join(v for _, v in tokens[start:end])
+
+    out_lines = []
+    for raw in block.splitlines():
+        if not raw.strip():
+            out_lines.append("")
+            continue
+        tokens = tokenize(raw)
+        visible = sum(1 for kind, _ in tokens if kind == "v")
+        if visible <= width:
+            out_lines.append("".join(v for _, v in tokens))
+            continue
+        start = 0
+        while start < len(tokens):
+            j, count = start, 0
+            while j < len(tokens) and count < width:
+                if tokens[j][0] == "v":
+                    count += 1
+                j += 1
+            cut = j
+            k = j - 1
+            while k > start:
+                if tokens[k][0] == "v" and tokens[k][1] == " ":
+                    cut = k + 1
+                    break
+                k -= 1
+            out_lines.append(emit(tokens, start, cut))
+            start = cut
+            if start >= len(tokens):
+                break
+    return "\n".join(out_lines)
 
 
 def main():
@@ -153,7 +204,13 @@ def main():
     t.set_font(FONT_FILE_BITMAP)
     t.toggle_show_cursor(True)
     # t.pasteImage("./temp/x0rzavi.jpg", 3, 5, sizeMulti=0.5)
-    t.gen_text(user_details_lines, 2, 35, count=5, contin=True)
+    t.gen_text(
+        wrap_text(user_details_lines, t.num_cols - 35 + 1),
+        2,
+        35,
+        count=5,
+        contin=True,
+    )
     t.gen_prompt(t.curr_row)
     t.gen_typing_text(
         "\x1b[92m# Have a nice day kind stranger :D Thanks for stopping by!",
