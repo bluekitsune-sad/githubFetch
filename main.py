@@ -40,7 +40,7 @@ def paste_alpha_image(
 
 
 def main():
-    t = gifos.Terminal(750, 750, 15, 15, FONT_FILE_BITMAP, 15)
+    t = gifos.Terminal(720, 1080, 15, 15, FONT_FILE_BITMAP, 15)
     t.set_prompt("\x1b[0;91msad\x1b[0m@\x1b[0;93mkitsune ~> \x1b[0m")
 
     t.gen_text("", 1, count=20)
