@@ -91,7 +91,7 @@ def main():
     t.toggle_show_cursor(False)
     t.gen_text("password: ", 4, count=5)
     t.toggle_show_cursor(True)
-    t.gen_typing_text("*********", 4, contin=True)
+    t.gen_typing_text("         ", 4, contin=True)
     t.toggle_show_cursor(False)
     time_now = datetime.now(ZoneInfo("Asia/Karachi")).strftime(
         "%a %b %d %I:%M:%S %p %Z %Y"
