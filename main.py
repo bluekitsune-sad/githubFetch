@@ -7,7 +7,36 @@ FONT_FILE_LOGO = "./fonts/vtks-blocketo.regular.ttf"
 # FONT_FILE_BITMAP = "./fonts/ter-u14n.pil"
 FONT_FILE_BITMAP = "./fonts/gohufont-uni-14.pil"
 FONT_FILE_TRUETYPE = "./fonts/IosevkaTermNerdFont-Bold.ttf"
-FONT_FILE_MONA = "./fonts/Inversionz.otf"
+
+
+def paste_alpha_image(
+    term: gifos.Terminal,
+    image_path: str,
+    row_num: int,
+    col_num: int,
+    size_multiplier: float,
+) -> None:
+    """Paste an RGBA image, flattening transparency onto the terminal background."""
+    import os
+
+    from PIL import Image, ImageColor
+
+    os.makedirs("frames", exist_ok=True)
+    with Image.open(image_path) as img:
+        img = img.resize(
+            (int(img.width * size_multiplier), int(img.height * size_multiplier))
+        )
+        if img.mode in ("RGBA", "LA"):
+            bg_color = term._Terminal__bg_color or (0, 0, 0)
+            bg_rgb = (
+                ImageColor.getrgb(bg_color)
+                if isinstance(bg_color, str)
+                else tuple(bg_color)
+            )
+            flat = Image.new("RGBA", img.size, (*bg_rgb, 255))
+            img = Image.alpha_composite(flat, img)
+        img.convert("RGB").save("frames/art_prepared.png")
+    term.paste_image("frames/art_prepared.png", row_num, col_num, 1)
 
 
 def main():
@@ -85,25 +114,28 @@ def main():
     \x1b[30;101msad@GitHub\x1b[0m
     --------------
     \x1b[96mOS:     \x1b[93mUbuntu, Kali, Arch, CachyOS\x1b[0m
-    \x1b[96mHost:   \x1b[93mIQRA University, Karachi \x1b[94m#IQRA\x1b[0m
-    \x1b[96mKernel: \x1b[93mComputer Science \x1b[94m#BSCS\x1b[0m
+    \x1b[96mHost:   \x1b[93mBachelor's Computer Science  \x1b[94m#IQRA University\x1b[0m
+    \x1b[96mKernel: \x1b[93mFull Stack Developer \x1b[94m#Archbtw\x1b[0m
     \x1b[96mUptime: \x1b[93m{user_age.years} years, {user_age.months} months, {user_age.days} days\x1b[0m
-    \x1b[96mIDE:    \x1b[93mneovim, VSCode, Android Studio\x1b[0m
+    \x1b[96mIDE:    \x1b[93mneovim, VSCode, Android Studio, Unity\x1b[0m
     
     \x1b[30;101mContact:\x1b[0m
     --------------
     \x1b[96mEmail:      \x1b[93msaadyousu64@gmail.com\x1b[0m
     \x1b[96mLinkedIn:   \x1b[93msyed-saad-yousuf-raza\x1b[0m
     
-    \x1b[30;101mGitHub Stats:\x1b[0m
+    \x1b[30;101mTech Stack & Skills:\x1b[0m
     --------------
-    \x1b[96mUser Rating: \x1b[93m{git_user_details.user_rank.level}\x1b[0m
-    \x1b[96mTotal Stars Earned: \x1b[93m{git_user_details.total_stargazers}\x1b[0m
+    \x1b[96mLanguages: \x1b[93mJavaScript, Python, Kotlin, Java, Lua\x1b[0m
+    \x1b[96mFrontend: \x1b[93mReact.js, Next.js, Bootstrap, Material UI, React Native\x1b[0m
+    \x1b[96mBackend: \x1b[93mFlask, FastAPI, NestJS, Express.js\x1b[0m
+    \x1b[96mDatabases: \x1b[93mMongoDB, SQLite, MySQL, Firebase\x1b[0m
+    \x1b[96mFrameworks: \x1b[93mSASS, Pygame-CE, Redux, Kaplay.js\x1b[0m
+    \x1b[96mCybersecurity: \x1b[93mBurp Suite, Hashcat, John the Ripper, OWASP, Scapy, Pwntools\x1b[0m
+    \x1b[96mCloud & DevOps: \x1b[93mAWS, Azure, Google Cloud, Docker, Linode\x1b[0m
+    \x1b[96mTools: \x1b[93mPhotoshop, After Effects\x1b[0m	    
+    \x1b[96mAutomation: \x1b[93mPower Automate, n8n\x1b[0m
     \x1b[96mTotal Commits ({int(year_now) - 1}): \x1b[93m{git_user_details.total_commits_last_year}\x1b[0m
-    \x1b[96mTotal PRs: \x1b[93m{git_user_details.total_pull_requests_made}\x1b[0m
-    \x1b[96mMerged PR %: \x1b[93m{git_user_details.pull_requests_merge_percentage}\x1b[0m
-    \x1b[96mTotal Contributions: \x1b[93m{git_user_details.total_repo_contributions}\x1b[0m
-    \x1b[96mTop Languages: \x1b[93m{', '.join(top_languages[:5])}\x1b[0m
     """
     t.gen_prompt(1)
     prompt_col = t.curr_col
@@ -114,33 +146,8 @@ def main():
     t.gen_text("\x1b[92mfetch.sh\x1b[0m", 1, contin=True)
     t.gen_typing_text(" -u bluekitsune-sad", 1, contin=True)
 
-    t.set_font(FONT_FILE_MONA, 16, 0)
     t.toggle_show_cursor(False)
-    monaLines = r"""
-    \x1b[49m     \x1b[90;100m}}\x1b[49m     \x1b[90;100m}}\x1b[0m
-    \x1b[49m    \x1b[90;100m}}}}\x1b[49m   \x1b[90;100m}}}}\x1b[0m
-    \x1b[49m    \x1b[90;100m}}}}}\x1b[49m \x1b[90;100m}}}}}\x1b[0m
-    \x1b[49m   \x1b[90;100m}}}}}}}}}}}}}\x1b[0m
-    \x1b[49m   \x1b[90;100m}}}}}}}}}}}}}}\x1b[0m
-    \x1b[49m   \x1b[90;100m}}\x1b[37;47m}}}}}}}\x1b[90;100m}}}}}\x1b[0m
-    \x1b[49m  \x1b[90;100m}}\x1b[37;47m}}}}}}}}}}\x1b[90;100m}}}\x1b[0m
-    \x1b[49m  \x1b[90;100m}}\x1b[37;47m}\x1b[90;100m}\x1b[37;47m}}}}}\x1b[90;100m}\x1b[37;47m}}\x1b[90;100m}}}}\x1b[0m
-    \x1b[49m  \x1b[90;100m}\x1b[37;47m}}\x1b[90;100m}\x1b[37;47m}}}}}\x1b[90;100m}\x1b[37;47m}}}\x1b[90;100m}}}\x1b[0m
-    \x1b[90;100m}}}\x1b[37;47m}}}}\x1b[90;100m}}}\x1b[37;47m}}}}}\x1b[90;100m}}}}\x1b[0m
-    \x1b[49m  \x1b[90;100m}\x1b[37;47m}}}}}\x1b[90;100m}}\x1b[37;47m}}}}}\x1b[90;100m}}}\x1b[0m
-    \x1b[49m \x1b[90;100m}}\x1b[37;47m}}}}}}}}}}}}\x1b[90;100m}}}\x1b[0m
-    \x1b[90;100m}\x1b[49m  \x1b[90;100m}}\x1b[37;47m}}}}}}}}\x1b[90;100m}}}\x1b[49m  \x1b[90;100m}\x1b[0m
-    \x1b[49m        \x1b[90;100m}}}}}\x1b[0m
-    \x1b[49m       \x1b[90;100m}}}}}}}\x1b[0m
-    \x1b[49m       \x1b[90;100m}}}}}}}}\x1b[0m
-    \x1b[49m      \x1b[90;100m}}}}}}}}}}\x1b[0m
-    \x1b[49m     \x1b[90;100m}}}}}}}}}}}\x1b[0m
-    \x1b[49m     \x1b[90;100m}}}}}}}}}}}}\x1b[0m
-    \x1b[49m     \x1b[90;100m}}\x1b[49m \x1b[90;100m}}}}}}\x1b[49m \x1b[90;100m}}\x1b[0m
-    \x1b[49m        \x1b[90;100m}}}}}}}\x1b[0m
-    \x1b[49m         \x1b[90;100m}}}\x1b[49m \x1b[90;100m}}\x1b[0m
-    """
-    t.gen_text(monaLines, 10)
+    paste_alpha_image(t, "./assets/ascii-art.png", 10, 1, 0.48)
 
     t.set_font(FONT_FILE_BITMAP)
     t.toggle_show_cursor(True)

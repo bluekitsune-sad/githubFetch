@@ -163,6 +163,7 @@ cython_debug/
 *.png
 *.gif
 !output.gif
+!assets/*.png
 temp*
 frame*
 
