@@ -185,7 +185,7 @@ def main():
     \x1b[96mCybersecurity: \x1b[93mBurp Suite, Hashcat, John the Ripper, OWASP, Scapy, Pwntools\x1b[0m
     \x1b[96mCloud & DevOps: \x1b[93mAWS, Azure, Google Cloud, Docker, Linode\x1b[0m
     \x1b[96mTools: \x1b[93mPhotoshop, After Effects\x1b[0m	    
-    \x1b[96mAutomation: \x1b[93mPower Automate, n8n\x1b[0m
+    \x1b[96mAutomation: \x1b[93mPower Automate, n8n, OpenAI Codex, Claude Co-work\x1b[0m
     \x1b[96mTotal Commits ({int(year_now) - 1}): \x1b[93m{git_user_details.total_commits_last_year}\x1b[0m
 
     """
